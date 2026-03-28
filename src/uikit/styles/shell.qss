@@ -1,0 +1,202 @@
+/* Shell layout-related styles only.
+ * Do not put generic control styles here. */
+
+QWidget[uiRole="appShellRoot"] {
+    background-color: @BG_BASE@;
+    border: none;
+}
+
+/* Title bar */
+QWidget[uiRole="titleBar"] {
+    background-color: @GLASS_TITLE@;
+    border: none;
+    min-height: @TITLE_BAR_HEIGHT@;
+    max-height: @TITLE_BAR_HEIGHT@;
+    margin: 0;
+    padding: 0;
+}
+QWidget[uiRole="titleBarActions"] {
+    margin: 0;
+    padding: 0;
+    border: none;
+    background-color: @GLASS_TITLE@;
+}
+QLabel[uiRole="titleBarLabel"] {
+    font-weight: 600;
+}
+
+/* Source of truth: title bar button states live only in shell.qss.
+ * Use QPushButton + property to avoid custom-class selector mismatch. */
+QWidget[uiRole="titleBar"] QPushButton[uiSurface="titleBar"]#TitleBarMinButton,
+QWidget[uiRole="titleBar"] QPushButton[uiSurface="titleBar"]#TitleBarMaxButton,
+QWidget[uiRole="titleBar"] QPushButton[uiSurface="titleBar"]#TitleBarCloseButton {
+    min-width: @TITLE_BAR_HEIGHT@;
+    max-width: @TITLE_BAR_HEIGHT@;
+    min-height: @TITLE_BAR_HEIGHT@;
+    max-height: @TITLE_BAR_HEIGHT@;
+    margin: 0;
+    padding: 0;
+    border: none;
+    border-radius: 0;
+    background-color: transparent;
+    color: @TITLE_BTN_TEXT@;
+    font-size: 12px;
+    font-weight: 500;
+}
+QWidget[uiRole="titleBar"] QPushButton[uiSurface="titleBar"]#TitleBarMaxButton {
+    font-size: 16px;
+}
+QWidget[uiRole="titleBar"] QPushButton[uiSurface="titleBar"]#TitleBarMinButton:hover,
+QWidget[uiRole="titleBar"] QPushButton[uiSurface="titleBar"]#TitleBarMaxButton:hover,
+QWidget[uiRole="titleBar"] QPushButton[uiSurface="titleBar"]#TitleBarCloseButton:hover {
+    background-color: @TITLE_BTN_HOVER@;
+    color: @TITLE_BTN_TEXT@;
+}
+QWidget[uiRole="titleBar"] QPushButton[uiSurface="titleBar"]#TitleBarMinButton:pressed,
+QWidget[uiRole="titleBar"] QPushButton[uiSurface="titleBar"]#TitleBarMaxButton:pressed,
+QWidget[uiRole="titleBar"] QPushButton[uiSurface="titleBar"]#TitleBarCloseButton:pressed {
+    background-color: @TITLE_BTN_PRESSED@;
+}
+QWidget[uiRole="titleBar"] QPushButton[uiSurface="titleBar"]#TitleBarMaxButton:checked {
+    background-color: @TITLE_BTN_CHECKED@;
+    color: @TITLE_BTN_TEXT@;
+}
+QWidget[uiRole="titleBar"] QPushButton[uiSurface="titleBar"]#TitleBarMaxButton:checked:hover {
+    background-color: @TITLE_BTN_HOVER@;
+    color: @TITLE_BTN_TEXT@;
+}
+QWidget[uiRole="titleBar"] QPushButton[uiSurface="titleBar"]#TitleBarCloseButton:hover {
+    background-color: @TITLE_CLOSE_HOVER@;
+    color: @TITLE_CLOSE_TEXT@;
+}
+QWidget[uiRole="titleBar"] QPushButton[uiSurface="titleBar"]#TitleBarCloseButton:pressed {
+    background-color: @TITLE_CLOSE_PRESSED@;
+    color: @TITLE_CLOSE_TEXT@;
+}
+
+/* Navigation */
+QWidget[uiRole="navigation"] {
+    background-color: @GLASS_NAV@;
+    border: none;
+}
+QWidget[uiRole="navigationHeader"] {
+    background: transparent;
+    border: none;
+    border-bottom: none;
+    padding: 0 2px 6px 2px;
+}
+QWidget[uiRole="navigation"][uiPosition="top"] QWidget[uiRole="navigationHeader"],
+QWidget[uiRole="navigation"][uiPosition="bottom"] QWidget[uiRole="navigationHeader"] {
+    padding: 0;
+}
+QLabel[uiRole="navigationLogo"] { background: transparent; }
+QWidget[uiRole="navigationTextHost"] { background: transparent; border: none; }
+QLabel[uiRole="navigationTitle"] {
+    background: transparent;
+    font-weight: 600;
+    color: @TEXT_PRIMARY@;
+    font-size: 13px;
+}
+QLabel[uiRole="navigationSectionTitle"] {
+    background: transparent;
+    color: @TEXT_SECONDARY@;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 6px 8px 2px 8px;
+}
+QScrollArea[uiRole="navigationScrollArea"] {
+    background: transparent;
+    border: none;
+}
+QWidget[uiRole="navigationScrollViewport"] {
+    background: transparent;
+    border: none;
+}
+QScrollBar[uiRole="navigationOverlayScrollBar"]:vertical {
+    background: @NAV_SCROLL_TRACK@;
+    width: 4px;
+    margin: 2px 0 2px 0;
+    border: none;
+}
+QScrollBar[uiRole="navigationOverlayScrollBar"]::handle:vertical {
+    background: @NAV_SCROLL_THUMB@;
+    border-radius: 2px;
+    min-height: 22px;
+}
+QScrollBar[uiRole="navigationOverlayScrollBar"]::handle:vertical:hover {
+    background: @NAV_SCROLL_THUMB_HOVER@;
+}
+QScrollBar[uiRole="navigationOverlayScrollBar"]::add-line:vertical,
+QScrollBar[uiRole="navigationOverlayScrollBar"]::sub-line:vertical,
+QScrollBar[uiRole="navigationOverlayScrollBar"]::add-page:vertical,
+QScrollBar[uiRole="navigationOverlayScrollBar"]::sub-page:vertical {
+    background: transparent;
+    border: none;
+    height: 0;
+}
+QWidget[uiRole="navigationListHost"] {
+    background: transparent;
+}
+QFrame[uiRole="navigationSectionSeparator"] {
+    background: @BORDER_BASE@;
+    color: @BORDER_BASE@;
+    border: none;
+}
+QToolButton[uiRole="navigationCollapseButton"] {
+    background: transparent;
+    border: none;
+    border-radius: 4px;
+    color: @TEXT_SECONDARY@;
+}
+QToolButton[uiRole="navigationCollapseButton"]:hover {
+    background: @NAV_ITEM_HOVER@;
+}
+QWidget[uiRole="navigation"] QToolButton[uiRole="navigationItem"] {
+    text-align: left;
+    border: none;
+    border-radius: @RADIUS_SM@;
+    padding: 8px 10px;
+    color: @TEXT_PRIMARY@;
+    background: transparent;
+    margin: 0;
+}
+QWidget[uiRole="navigation"][uiPosition="top"] QToolButton[uiRole="navigationItem"],
+QWidget[uiRole="navigation"][uiPosition="bottom"] QToolButton[uiRole="navigationItem"] {
+    min-height: @TITLE_BAR_HEIGHT@;
+    max-height: @TITLE_BAR_HEIGHT@;
+    padding: 0 12px 0 12px;
+    border-radius: 0;
+    margin: 0;
+    text-align: left;
+}
+QWidget[uiRole="navigation"][uiPosition="top"] QToolButton[uiRole="navigationItem"][navHasIcon="false"],
+QWidget[uiRole="navigation"][uiPosition="bottom"] QToolButton[uiRole="navigationItem"][navHasIcon="false"] {
+    text-align: left;
+}
+QWidget[uiRole="navigation"] QToolButton[uiRole="navigationItem"][navCollapsed="true"] {
+    padding: 0 10px;
+    text-align: left;
+}
+QWidget[uiRole="navigation"] QToolButton[uiRole="navigationItem"]:checked {
+    background-color: @PRIMARY_SOFT@;
+    color: @PRIMARY@;
+    border-left: 2px solid @PRIMARY@;
+    font-weight: 600;
+}
+QWidget[uiRole="navigation"][uiPosition="top"] QToolButton[uiRole="navigationItem"]:checked,
+QWidget[uiRole="navigation"][uiPosition="bottom"] QToolButton[uiRole="navigationItem"]:checked {
+    border-left: none;
+    border-bottom: 2px solid @PRIMARY@;
+}
+QWidget[uiRole="navigation"] QToolButton[uiRole="navigationItem"]:hover:!checked {
+    background-color: @NAV_ITEM_HOVER@;
+}
+QWidget[uiRole="navigation"] QToolButton[uiRole="navigationItem"]:pressed {
+    background-color: @PRIMARY_SOFT@;
+}
+
+/* Content area */
+QFrame[uiRole="contentHost"] {
+    background-color: @CONTENT_BG@;
+    border: none;
+}

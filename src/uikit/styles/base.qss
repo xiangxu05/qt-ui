@@ -1,0 +1,26 @@
+/* Global typography and canvas baseline */
+QWidget {
+    color: @TEXT_PRIMARY@;
+    background: @BG_BASE@;
+    font-family: "Microsoft YaHei UI", "Segoe UI", sans-serif;
+    font-size: 13px;
+}
+
+/* Dialog-specific text hierarchy */
+QLabel[uiRole="dialogTitle"] {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+QLabel[uiRole="dialogMessage"] {
+    color: @TEXT_SECONDARY@;
+}
+
+/* Gallery demo text roles */
+QLabel[uiRole="galleryTitle"] {
+    font-size: 22px;
+    font-weight: 700;
+}
+QLabel[uiRole="galleryDesc"] {
+    color: @TEXT_SECONDARY@;
+}

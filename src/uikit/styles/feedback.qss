@@ -1,0 +1,25 @@
+/* Message bar variants */
+QWidget[uiRole="messageBar"] {
+    border-radius: @RADIUS_MD@;
+    border: 1px solid @BORDER_BASE@;
+    background: @BG_ELEVATED@;
+}
+QWidget[uiRole="messageBar"][uiType="success"] { background: @STATE_SUCCESS_BG@; border-color: @STATE_SUCCESS_BORDER@; }
+QWidget[uiRole="messageBar"][uiType="warning"] { background: @STATE_WARNING_BG@; border-color: @STATE_WARNING_BORDER@; }
+QWidget[uiRole="messageBar"][uiType="error"] { background: @STATE_ERROR_BG@; border-color: @STATE_ERROR_BORDER@; }
+
+/* Toast variants */
+QWidget[uiRole="toast"] {
+    background: @TOAST_BG@;
+    color: @ON_PRIMARY@;
+    border-radius: @RADIUS_MD@;
+}
+QWidget[uiRole="toast"][uiType="success"] { background: @TOAST_SUCCESS_BG@; }
+QWidget[uiRole="toast"][uiType="warning"] { background: @TOAST_WARNING_BG@; }
+QWidget[uiRole="toast"][uiType="error"] { background: @TOAST_ERROR_BG@; }
+
+/* Dialog shell */
+QDialog[uiRole="dialog"] {
+    background: @BG_ELEVATED@;
+    border-radius: @RADIUS_LG@;
+}

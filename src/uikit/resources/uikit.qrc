@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/uikit/styles">
+        <file alias="base.qss">../styles/base.qss</file>
+        <file alias="controls.qss">../styles/controls.qss</file>
+        <file alias="feedback.qss">../styles/feedback.qss</file>
+        <file alias="shell.qss">../styles/shell.qss</file>
+    </qresource>
+</RCC>

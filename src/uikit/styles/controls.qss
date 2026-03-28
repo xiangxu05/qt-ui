@@ -1,0 +1,60 @@
+/* Button base */
+QPushButton[uiRole="button"] {
+    border-radius: @RADIUS_MD@;
+    border: 1px solid @BORDER_BASE@;
+    background: @BG_ELEVATED@;
+    color: @TEXT_PRIMARY@;
+    padding: 0 12px;
+    font-weight: 500;
+}
+
+/* Button size scale */
+QPushButton[uiRole="button"][uiSize="sm"] { min-height: 30px; }
+QPushButton[uiRole="button"][uiSize="md"] { min-height: 36px; }
+QPushButton[uiRole="button"][uiSize="lg"] { min-height: 44px; }
+
+/* Button variants */
+QPushButton[uiRole="button"][uiVariant="primary"] {
+    background: @PRIMARY@;
+    border-color: @PRIMARY@;
+    color: @ON_PRIMARY@;
+}
+QPushButton[uiRole="button"][uiVariant="primary"]:hover { background: @PRIMARY_HOVER@; border-color: @PRIMARY_HOVER@; }
+QPushButton[uiRole="button"][uiVariant="primary"]:pressed { background: @PRIMARY_PRESSED@; border-color: @PRIMARY_PRESSED@; }
+
+QPushButton[uiRole="button"][uiVariant="secondary"] { background: @BG_ELEVATED@; border-color: @BORDER_STRONG@; }
+QPushButton[uiRole="button"][uiVariant="ghost"] { background: transparent; border-color: transparent; color: @PRIMARY@; }
+QPushButton[uiRole="button"][uiVariant="danger"] { background: @DANGER@; border-color: @DANGER@; color: @ON_PRIMARY@; }
+QPushButton[uiRole="button"][uiVariant="icon"] { min-width: 32px; max-width: 32px; padding: 0; }
+QPushButton[uiRole="button"]:disabled { color: @TEXT_MUTED@; background: @DISABLED_BG@; border-color: @DISABLED_BORDER@; }
+
+/* Input controls */
+QLineEdit[uiRole="lineEdit"], QComboBox[uiRole="comboBox"] {
+    background: @BG_ELEVATED@;
+    border: 1px solid @BORDER_BASE@;
+    border-radius: @RADIUS_SM@;
+    padding: 8px 10px;
+    min-height: 18px;
+}
+QLineEdit[uiRole="lineEdit"]:focus, QComboBox[uiRole="comboBox"]:focus {
+    border-color: @PRIMARY@;
+}
+QLineEdit[uiRole="lineEdit"][uiError="true"], QComboBox[uiRole="comboBox"][uiError="true"] {
+    border-color: @DANGER@;
+}
+
+/* Switch control */
+QCheckBox[uiRole="switch"] {
+    spacing: 8px;
+}
+QCheckBox[uiRole="switch"]::indicator {
+    width: 36px;
+    height: 20px;
+    border-radius: 10px;
+    border: 1px solid @BORDER_BASE@;
+    background: @SWITCH_TRACK_BG@;
+}
+QCheckBox[uiRole="switch"]::indicator:checked {
+    background: @PRIMARY@;
+    border-color: @PRIMARY@;
+}
