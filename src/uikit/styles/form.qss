@@ -1,0 +1,146 @@
+/*
+ * Form 组件（与 `src/uikit/form` 对应）
+ * — UiLineEdit[uiRole="lineEdit"]、UiComboBox[uiRole="comboBox"]、UiSwitch[uiRole="switch"]
+ */
+
+/* 单行输入 / 下拉框 — 基底、Focus、Error、Disabled */
+QLineEdit[uiRole="lineEdit"],
+QComboBox[uiRole="comboBox"] {
+    background: @BG_ELEVATED@;
+    border: @BORDER_WIDTH@ solid @BORDER_BASE@;
+    border-radius: @RADIUS_SM@;
+    padding: @SPACING_SM@ 10px;
+    min-height: 18px;
+    outline: none;
+    transition: border-color @DURATION_NORMAL@ @EASING_EASE_IN_OUT@,
+                box-shadow @DURATION_NORMAL@ @EASING_EASE_IN_OUT@;
+}
+
+QComboBox[uiRole="comboBox"] {
+    padding-right: 36px;
+}
+
+QLineEdit[uiRole="lineEdit"]:focus,
+QComboBox[uiRole="comboBox"]:focus {
+    border-color: @PRIMARY@;
+    box-shadow: @PRIMARY_FOCUS_RING@;
+}
+QLineEdit[uiRole="lineEdit"][uiError="true"],
+QComboBox[uiRole="comboBox"][uiError="true"] {
+    border-color: @DANGER@;
+}
+QLineEdit[uiRole="lineEdit"][uiError="true"]:focus,
+QComboBox[uiRole="comboBox"][uiError="true"]:focus {
+    border-color: @DANGER@;
+    box-shadow: @DANGER_FOCUS_RING@;
+}
+QLineEdit[uiRole="lineEdit"]:disabled,
+QComboBox[uiRole="comboBox"]:disabled {
+    color: @TEXT_MUTED@;
+    background: @DISABLED_BG@;
+    border-color: @DISABLED_BORDER@;
+    cursor: not-allowed;
+}
+
+/* QComboBox 下拉按钮与箭头（原先与 QLineEdit 共用规则，未单独刻画） */
+QComboBox[uiRole="comboBox"]::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: center right;
+    width: 32px;
+    border: none;
+    border-left: @BORDER_WIDTH@ solid @BORDER_BASE@;
+    background: @BG_ELEVATED@;
+    border-top-right-radius: @RADIUS_SM@;
+    border-bottom-right-radius: @RADIUS_SM@;
+}
+QComboBox[uiRole="comboBox"]:focus::drop-down {
+    border-left-color: @PRIMARY@;
+    background: @BG_ELEVATED@;
+}
+QComboBox[uiRole="comboBox"][uiError="true"]::drop-down {
+    border-left-color: @DANGER@;
+}
+QComboBox[uiRole="comboBox"][uiError="true"]:focus::drop-down {
+    border-left-color: @DANGER@;
+}
+QComboBox[uiRole="comboBox"]:disabled::drop-down {
+    border-left-color: @DISABLED_BORDER@;
+    background: @DISABLED_BG@;
+}
+
+QComboBox[uiRole="comboBox"]::down-arrow {
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 6px solid @TEXT_SECONDARY@;
+    margin-right: 10px;
+}
+QComboBox[uiRole="comboBox"]:disabled::down-arrow {
+    border-top-color: @TEXT_MUTED@;
+}
+
+/* 下拉列表弹出层 */
+QComboBox[uiRole="comboBox"] QAbstractItemView {
+    background: @BG_ELEVATED@;
+    border: @BORDER_WIDTH@ solid @BORDER_BASE@;
+    border-radius: @RADIUS_SM@;
+    padding: @SPACING_XS@;
+    outline: none;
+    selection-background-color: @PRIMARY_SOFT@;
+    selection-color: @TEXT_PRIMARY@;
+}
+
+/*
+ * Switch（UiSwitch）
+ * - 必须 `image: none`，否则 Fusion/Windows 仍会画默认勾选/圆点。
+ * - 未选中：`background: transparent` 透出宿主（见 `base.qss` 的 galleryContentPage + contentHost），只保留细边框，避免再铺一层灰。
+ * - 控件本身 `background: transparent`，避免 QCheckBox 整行出现灰底。
+ */
+QCheckBox[uiRole="switch"] {
+    spacing: 8px;
+    outline: none;
+    background: transparent;
+}
+QCheckBox[uiRole="switch"]::indicator {
+    width: 36px;
+    height: 20px;
+    border-radius: 10px;
+    image: none;
+}
+QCheckBox[uiRole="switch"]::indicator:unchecked {
+    image: none;
+    background: transparent;
+    border: @BORDER_WIDTH@ solid @BORDER_BASE@;
+}
+QCheckBox[uiRole="switch"]::indicator:checked {
+    image: none;
+    background: @PRIMARY@;
+    border: @BORDER_WIDTH@ solid @PRIMARY@;
+}
+QCheckBox[uiRole="switch"]:unchecked:hover::indicator {
+    border-color: @PRIMARY@;
+    background: @BG_ELEVATED@;
+}
+QCheckBox[uiRole="switch"]:checked:hover::indicator {
+    background: @PRIMARY_HOVER@;
+    border-color: @PRIMARY_HOVER@;
+}
+QCheckBox[uiRole="switch"]:focus::indicator {
+    image: none;
+    box-shadow: @PRIMARY_FOCUS_RING@;
+}
+QCheckBox[uiRole="switch"]:disabled {
+    color: @TEXT_MUTED@;
+    cursor: not-allowed;
+}
+QCheckBox[uiRole="switch"]:disabled::indicator:unchecked {
+    image: none;
+    background: @DISABLED_BG@;
+    border-color: @DISABLED_BORDER@;
+}
+QCheckBox[uiRole="switch"]:disabled::indicator:checked {
+    image: none;
+    background: @GRAY_6@;
+    border-color: @GRAY_6@;
+}

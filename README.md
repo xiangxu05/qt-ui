@@ -121,6 +121,7 @@ qt-ui/
 
 ```cpp
 #include <uikit/controls/ui_button.h>
+#include <uikit/controls/ui_label.h>
 #include <uikit/core/theme_manager.h>
 
 // 创建按钮
@@ -128,17 +129,24 @@ uikit::UiButton* button = new uikit::UiButton("Click me", this);
 button->setVariant(uikit::UiButton::Variant::Primary);
 button->setSize(uikit::UiButton::Size::Large);
 
-// 切换主题
-uikit::ThemeManager::instance()->setTheme(uikit::Theme::Dark);
+// 标题/正文层级（对应 base.qss 中 QLabel[uiTextRole=…]）
+uikit::UiLabel* title = new uikit::UiLabel(QStringLiteral("标题"), this);
+title->setTextRole(uikit::UiLabel::TextRole::H1);
+
+// 切换主题（会写入 QSettings，便于下次启动恢复）
+uikit::ThemeManager::instance()->setTheme(uikit::ThemeManager::ThemeType::Dark);
 ```
 
 ### 自定义主题
 
 ```cpp
-// 通过设计令牌自定义主题
-auto& tokens = uikit::ThemeTokens::instance();
-tokens.setPrimaryColor(QColor("#1890ff"));
-tokens.setBorderRadius(4);
+// 浅色基底 + 自定义主色；第二参数为 true 时基于深色基底
+auto tokens = uikit::ThemeTokenFactory::createThemeWithBrand(QColor(QStringLiteral("#1890ff")), false);
+// 或使用预设：uikit::BrandPreset::Purple / Red / Green / Orange / Blue
+// auto tokens = uikit::ThemeTokenFactory::createThemeWithBrand(uikit::BrandPreset::Purple, false);
+
+uikit::ThemeManager::instance()->setCustomTokens(tokens);
+uikit::ThemeManager::instance()->setTheme(uikit::ThemeManager::ThemeType::Custom);
 ```
 
 ## 🤝 贡献指南

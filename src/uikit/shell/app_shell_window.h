@@ -12,16 +12,16 @@ class QFrame;
 
 namespace uikit {
 
-class TitleBar;
+class UiTitleBar;
 
-class AppShellWindow : public QMainWindow {
+class UiAppShellWindow : public QMainWindow {
     Q_OBJECT
 public:
-    explicit AppShellWindow(QWidget* parent = nullptr);
+    explicit UiAppShellWindow(QWidget* parent = nullptr);
     void setMinimumWindowSize(int width, int height);
-    void setNavigationModel(const NavigationPanel::Model& model);
+    void setNavigationModel(const UiNavigationPanel::Model& model);
 
-    void setNavigationPosition(NavigationPanel::Position position);
+    void setNavigationPosition(UiNavigationPanel::Position position);
     void setNavigationCollapsed(bool collapsed);
     void setContentWidget(QWidget* widget);
     void switchContentWidget(QWidget* widget, int durationMs = 220);
@@ -52,14 +52,14 @@ private:
     Qt::CursorShape cursorForEdge(ResizeEdge edge) const;
     bool isTopDragRegion(QObject* watched, const QPoint& globalPos) const;
 
-    TitleBar* titleBar_ = nullptr;
-    NavigationPanel* navPanel_ = nullptr;
+    UiTitleBar* titleBar_ = nullptr;
+    UiNavigationPanel* navPanel_ = nullptr;
     QFrame* contentHost_ = nullptr;
     QWidget* contentWidget_ = nullptr;
     QBoxLayout* outerLayout_ = nullptr;
     QBoxLayout* bodyLayout_ = nullptr;
 
-    NavigationPanel::Position navPosition_ = NavigationPanel::Position::Left;
+    UiNavigationPanel::Position navPosition_ = UiNavigationPanel::Position::Left;
     ResizeEdge resizeEdge_ = ResizeEdge::None;
     bool windowDragging_ = false;
     QPoint windowDragAnchor_;

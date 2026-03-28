@@ -3,6 +3,8 @@
 
 #include <QComboBox>
 
+class QEvent;
+
 namespace uikit {
 
 class UiComboBox : public QComboBox {
@@ -14,8 +16,12 @@ public:
     bool hasError() const;
     void setErrorState(bool error);
 
+protected:
+    void changeEvent(QEvent* event) override;
+
 private:
     void refreshStyle();
+    void updateComboCursor();
 
     bool error_ = false;
 };

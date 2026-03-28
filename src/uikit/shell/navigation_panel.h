@@ -19,7 +19,7 @@ class QToolButton;
 
 namespace uikit {
 
-class NavigationPanel : public QWidget {
+class UiNavigationPanel : public QWidget {
     Q_OBJECT
 public:
     struct HeaderModel {
@@ -53,7 +53,7 @@ public:
     };
     Q_ENUM(Position)
 
-    explicit NavigationPanel(QWidget* parent = nullptr);
+    explicit UiNavigationPanel(QWidget* parent = nullptr);
     void setModel(const Model& model);
     const Model& model() const;
     void activateItem(const QString& key);

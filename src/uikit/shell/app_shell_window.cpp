@@ -20,7 +20,7 @@ constexpr int kMinWindowHeight = 600;
 constexpr int kResizeBorder = 6;
 }
 
-AppShellWindow::AppShellWindow(QWidget* parent)
+UiAppShellWindow::UiAppShellWindow(QWidget* parent)
     : QMainWindow(parent) {
     // 设置窗口窗口基本属性
     setWindowFlags(Qt::FramelessWindowHint | Qt::Window);
@@ -46,10 +46,10 @@ AppShellWindow::AppShellWindow(QWidget* parent)
     outerLayout_->setContentsMargins(0, 0, 0, 0);
     outerLayout_->setSpacing(0);
 
-    titleBar_ = new TitleBar(root);
+    titleBar_ = new UiTitleBar(root);
     titleBar_->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     titleBar_->setMouseTracking(true);
-    navPanel_ = new NavigationPanel(root);
+    navPanel_ = new UiNavigationPanel(root);
     navPanel_->setMouseTracking(true);
     contentHost_ = new QFrame(root);
     contentHost_->setProperty("uiRole", "contentHost"); // 设置内容宿主属性
@@ -66,17 +66,17 @@ AppShellWindow::AppShellWindow(QWidget* parent)
     bodyLayout_->setSpacing(0);
     outerLayout_->addLayout(bodyLayout_);
 
-    connect(titleBar_, &TitleBar::minimizeRequested, this, &QWidget::showMinimized);
-    connect(titleBar_, &TitleBar::maximizeRestoreRequested, this, [this]() {
+    connect(titleBar_, &UiTitleBar::minimizeRequested, this, &QWidget::showMinimized);
+    connect(titleBar_, &UiTitleBar::maximizeRestoreRequested, this, [this]() {
         isMaximized() ? showNormal() : showMaximized();
         titleBar_->setMaximizedState(isMaximized());
     });
-    connect(titleBar_, &TitleBar::closeRequested, this, &QWidget::close);
-    connect(titleBar_, &TitleBar::titleDoubleClicked, this, [this]() {
+    connect(titleBar_, &UiTitleBar::closeRequested, this, &QWidget::close);
+    connect(titleBar_, &UiTitleBar::titleDoubleClicked, this, [this]() {
         isMaximized() ? showNormal() : showMaximized();
         titleBar_->setMaximizedState(isMaximized());
     });
-    connect(navPanel_, &NavigationPanel::itemActivatedWithWidget, this, [this](int index, const QString& key, QWidget* page) {
+    connect(navPanel_, &UiNavigationPanel::itemActivatedWithWidget, this, [this](int index, const QString& key, QWidget* page) {
         emit navigationItemActivated(index, key);
         emit navigationItemWidgetActivated(index, key, page);
         if (page) {
@@ -84,16 +84,16 @@ AppShellWindow::AppShellWindow(QWidget* parent)
         }
     });
 
-    setNavigationPosition(NavigationPanel::Position::Left);
+    setNavigationPosition(UiNavigationPanel::Position::Left);
     titleBar_->setMaximizedState(isMaximized());
     titleBar_->raise();
 }
 
-void AppShellWindow::setMinimumWindowSize(int width, int height) {
+void UiAppShellWindow::setMinimumWindowSize(int width, int height) {
     setMinimumSize(width, height);
 }
 
-void AppShellWindow::setNavigationModel(const NavigationPanel::Model& model) {
+void UiAppShellWindow::setNavigationModel(const UiNavigationPanel::Model& model) {
     QSet<QWidget*> adoptedPages;
     const auto adoptPage = [this, &adoptedPages](QWidget* page) {
         if (!page || adoptedPages.contains(page)) {
@@ -121,7 +121,7 @@ void AppShellWindow::setNavigationModel(const NavigationPanel::Model& model) {
     navPanel_->setModel(model);
 }
 
-void AppShellWindow::changeEvent(QEvent* event) {
+void UiAppShellWindow::changeEvent(QEvent* event) {
     QMainWindow::changeEvent(event);
     if (event && event->type() == QEvent::WindowStateChange && titleBar_) {
         titleBar_->setMaximizedState(isMaximized());
@@ -129,19 +129,19 @@ void AppShellWindow::changeEvent(QEvent* event) {
 }
 
 // 设置导航栏位置
-void AppShellWindow::setNavigationPosition(NavigationPanel::Position position) {
+void UiAppShellWindow::setNavigationPosition(UiNavigationPanel::Position position) {
     navPosition_ = position;
     navPanel_->setPosition(position);
     rebuildBodyLayout();
 }
 
 // 设置导航栏折叠
-void AppShellWindow::setNavigationCollapsed(bool collapsed) {
+void UiAppShellWindow::setNavigationCollapsed(bool collapsed) {
     navPanel_->setCollapsed(collapsed);
 }
 
 // 设置内容宿主
-void AppShellWindow::setContentWidget(QWidget* widget) {
+void UiAppShellWindow::setContentWidget(QWidget* widget) {
     if (!widget) {
         return;
     }
@@ -159,7 +159,7 @@ void AppShellWindow::setContentWidget(QWidget* widget) {
     contentWidget_->show();
 }
 
-void AppShellWindow::switchContentWidget(QWidget* widget, int durationMs) {
+void UiAppShellWindow::switchContentWidget(QWidget* widget, int durationMs) {
     if (!widget) {
         return;
     }
@@ -206,7 +206,7 @@ void AppShellWindow::switchContentWidget(QWidget* widget, int durationMs) {
 }
 
 // 事件过滤器
-bool AppShellWindow::eventFilter(QObject* watched, QEvent* event) {
+bool UiAppShellWindow::eventFilter(QObject* watched, QEvent* event) {
     // 内容区自适应
     if (watched == contentHost_ && event->type() == QEvent::Resize) {
         if (contentWidget_ && !switchingContent_) {
@@ -281,7 +281,7 @@ bool AppShellWindow::eventFilter(QObject* watched, QEvent* event) {
     return QMainWindow::eventFilter(watched, event);
 }
 
-bool AppShellWindow::isResizeEventTarget(QObject* watched) const {
+bool UiAppShellWindow::isResizeEventTarget(QObject* watched) const {
     if (watched == this) {
         return true;
     }
@@ -289,38 +289,38 @@ bool AppShellWindow::isResizeEventTarget(QObject* watched) const {
     return widget && (widget == centralWidget() || isAncestorOf(widget));
 }
 
-QRect AppShellWindow::contentTargetRect() const {
+QRect UiAppShellWindow::contentTargetRect() const {
     if (!contentHost_) {
         return QRect();
     }
     return contentHost_->contentsRect();
 }
 
-QPoint AppShellWindow::switchStartPosForDirection(const QRect& target) const {
+QPoint UiAppShellWindow::switchStartPosForDirection(const QRect& target) const {
     switch (navPosition_) {
-        case NavigationPanel::Position::Left:
+        case UiNavigationPanel::Position::Left:
             return QPoint(target.left() - target.width(), target.top());
-        case NavigationPanel::Position::Top:
+        case UiNavigationPanel::Position::Top:
             return QPoint(target.left(), target.top() - target.height());
-        case NavigationPanel::Position::Right:
+        case UiNavigationPanel::Position::Right:
             return QPoint(target.left() + target.width(), target.top());
-        case NavigationPanel::Position::Bottom:
+        case UiNavigationPanel::Position::Bottom:
             return QPoint(target.left(), target.top() + target.height());
     }
     return target.topLeft();
 }
 
-void AppShellWindow::rebuildBodyLayout() {
+void UiAppShellWindow::rebuildBodyLayout() {
     while (QLayoutItem* item = bodyLayout_->takeAt(0)) {
         item->widget();
         delete item;
     }
 
-    const bool horizontal = (navPosition_ == NavigationPanel::Position::Left ||
-                             navPosition_ == NavigationPanel::Position::Right);
+    const bool horizontal = (navPosition_ == UiNavigationPanel::Position::Left ||
+                             navPosition_ == UiNavigationPanel::Position::Right);
 
     if (horizontal) {
-        if (navPosition_ == NavigationPanel::Position::Left) {
+        if (navPosition_ == UiNavigationPanel::Position::Left) {
             bodyLayout_->addWidget(navPanel_);
             bodyLayout_->addWidget(contentHost_, 1);
         } else {
@@ -331,7 +331,7 @@ void AppShellWindow::rebuildBodyLayout() {
         auto* vertical = new QVBoxLayout();
         vertical->setContentsMargins(0, 0, 0, 0);
         vertical->setSpacing(0);
-        if (navPosition_ == NavigationPanel::Position::Top) {
+        if (navPosition_ == UiNavigationPanel::Position::Top) {
             vertical->addWidget(navPanel_);
             vertical->addWidget(contentHost_, 1);
         } else {
@@ -346,7 +346,7 @@ void AppShellWindow::rebuildBodyLayout() {
     }
 }
 
-AppShellWindow::ResizeEdge AppShellWindow::hitTestResizeEdge(const QPoint& pos) const {
+UiAppShellWindow::ResizeEdge UiAppShellWindow::hitTestResizeEdge(const QPoint& pos) const {
     int flags = 0;
     if (pos.x() <= kResizeBorder) {
         flags |= static_cast<int>(ResizeEdge::Left);
@@ -361,7 +361,7 @@ AppShellWindow::ResizeEdge AppShellWindow::hitTestResizeEdge(const QPoint& pos) 
     return static_cast<ResizeEdge>(flags);
 }
 
-void AppShellWindow::applyResize(const QPoint& globalPos) {
+void UiAppShellWindow::applyResize(const QPoint& globalPos) {
     QRect next = initialGeometry_;
     const QPoint delta = globalPos - initialMousePos_;
     const int edge = static_cast<int>(resizeEdge_);
@@ -384,7 +384,7 @@ void AppShellWindow::applyResize(const QPoint& globalPos) {
     }
 }
 
-Qt::CursorShape AppShellWindow::cursorForEdge(ResizeEdge edge) const {
+Qt::CursorShape UiAppShellWindow::cursorForEdge(ResizeEdge edge) const {
     const int value = static_cast<int>(edge);
     if (value == (static_cast<int>(ResizeEdge::Left) | static_cast<int>(ResizeEdge::Top)) ||
         value == (static_cast<int>(ResizeEdge::Right) | static_cast<int>(ResizeEdge::Bottom))) {
@@ -403,7 +403,7 @@ Qt::CursorShape AppShellWindow::cursorForEdge(ResizeEdge edge) const {
     return Qt::ArrowCursor;
 }
 
-bool AppShellWindow::isTopDragRegion(QObject* watched, const QPoint& globalPos) const {
+bool UiAppShellWindow::isTopDragRegion(QObject* watched, const QPoint& globalPos) const {
     if (!titleBar_) {
         return false;
     }

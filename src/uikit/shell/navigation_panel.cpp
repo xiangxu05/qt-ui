@@ -29,7 +29,7 @@ constexpr int kVerticalOuterMarginX = 30;
 constexpr int kVerticalOuterMarginBottom = 70;
 }
 
-NavigationPanel::NavigationPanel(QWidget* parent)
+UiNavigationPanel::UiNavigationPanel(QWidget* parent)
     : QWidget(parent) {
     setProperty("uiRole", "navigation");
     setAttribute(Qt::WA_StyledBackground, true);
@@ -39,17 +39,17 @@ NavigationPanel::NavigationPanel(QWidget* parent)
     rebuildLayout();
 }
 
-void NavigationPanel::setModel(const Model& model) {
+void UiNavigationPanel::setModel(const Model& model) {
     model_ = model;
     rebuildLayout();
     activateFirstItemIfAny();
 }
 
-const NavigationPanel::Model& NavigationPanel::model() const {
+const UiNavigationPanel::Model& UiNavigationPanel::model() const {
     return model_;
 }
 
-void NavigationPanel::activateItem(const QString& key) {
+void UiNavigationPanel::activateItem(const QString& key) {
     for (auto* item : items_) {
         if (item && item->property("navKey").toString() == key) {
             item->click();
@@ -58,7 +58,7 @@ void NavigationPanel::activateItem(const QString& key) {
     }
 }
 
-void NavigationPanel::setPosition(Position position) {
+void UiNavigationPanel::setPosition(Position position) {
     if (position_ == position) {
         return;
     }
@@ -81,11 +81,11 @@ void NavigationPanel::setPosition(Position position) {
     }
 }
 
-NavigationPanel::Position NavigationPanel::position() const {
+UiNavigationPanel::Position UiNavigationPanel::position() const {
     return position_;
 }
 
-void NavigationPanel::setCollapsed(bool collapsed) {
+void UiNavigationPanel::setCollapsed(bool collapsed) {
     if (isHorizontal()) {
         collapsed_ = false;
         return;
@@ -109,30 +109,30 @@ void NavigationPanel::setCollapsed(bool collapsed) {
     }
 }
 
-bool NavigationPanel::isCollapsed() const {
+bool UiNavigationPanel::isCollapsed() const {
     return collapsed_;
 }
 
-bool NavigationPanel::isHorizontal() const {
+bool UiNavigationPanel::isHorizontal() const {
     return position_ == Position::Top || position_ == Position::Bottom;
 }
 
-void NavigationPanel::enterEvent(QEnterEvent* event) {
+void UiNavigationPanel::enterEvent(QEnterEvent* event) {
     setOverlayScrollBarVisible(true);
     QWidget::enterEvent(event);
 }
 
-void NavigationPanel::leaveEvent(QEvent* event) {
+void UiNavigationPanel::leaveEvent(QEvent* event) {
     setOverlayScrollBarVisible(false);
     QWidget::leaveEvent(event);
 }
 
-void NavigationPanel::resizeEvent(QResizeEvent* event) {
+void UiNavigationPanel::resizeEvent(QResizeEvent* event) {
     QWidget::resizeEvent(event);
     updateCollapseToggleGeometry();
 }
 
-bool NavigationPanel::eventFilter(QObject* watched, QEvent* event) {
+bool UiNavigationPanel::eventFilter(QObject* watched, QEvent* event) {
     if (listScrollArea_ && watched == listScrollArea_->viewport() && event &&
         (event->type() == QEvent::Wheel || event->type() == QEvent::Resize)) {
         if (event->type() == QEvent::Wheel) {
@@ -154,7 +154,7 @@ bool NavigationPanel::eventFilter(QObject* watched, QEvent* event) {
     return QWidget::eventFilter(watched, event);
 }
 
-void NavigationPanel::setOverlayScrollBarVisible(bool visible) {
+void UiNavigationPanel::setOverlayScrollBarVisible(bool visible) {
     if (!overlayScrollBar_ || !sourceScrollBar_) {
         return;
     }
@@ -166,7 +166,7 @@ void NavigationPanel::setOverlayScrollBarVisible(bool visible) {
     overlayScrollBar_->raise();
 }
 
-void NavigationPanel::animateScrollTo(int targetValue) {
+void UiNavigationPanel::animateScrollTo(int targetValue) {
     if (!sourceScrollBar_) {
         return;
     }
@@ -188,7 +188,7 @@ void NavigationPanel::animateScrollTo(int targetValue) {
     setOverlayScrollBarVisible(true);
 }
 
-void NavigationPanel::updateOverlayScrollBarGeometry() {
+void UiNavigationPanel::updateOverlayScrollBarGeometry() {
     if (!listScrollArea_ || !overlayScrollBar_ || !listScrollArea_->viewport()) {
         return;
     }
@@ -201,7 +201,7 @@ void NavigationPanel::updateOverlayScrollBarGeometry() {
                                    qMax(0, viewportRect.height() - margin * 2));
 }
 
-QWidget* NavigationPanel::buildHeaderWidget() {
+QWidget* UiNavigationPanel::buildHeaderWidget() {
     if (model_.header.logo.isNull() && model_.header.title.isEmpty()) {
         return nullptr;
     }
@@ -239,7 +239,7 @@ QWidget* NavigationPanel::buildHeaderWidget() {
     return header;
 }
 
-void NavigationPanel::ensureCollapseToggle() {
+void UiNavigationPanel::ensureCollapseToggle() {
     if (isHorizontal()) {
         if (collapseToggle_) {
             collapseToggle_->hide();
@@ -262,7 +262,7 @@ void NavigationPanel::ensureCollapseToggle() {
     updateCollapseToggleGeometry();
 }
 
-void NavigationPanel::updateCollapseToggleGeometry() {
+void UiNavigationPanel::updateCollapseToggleGeometry() {
     if (!collapseToggle_ || isHorizontal()) {
         return;
     }
@@ -273,7 +273,7 @@ void NavigationPanel::updateCollapseToggleGeometry() {
     collapseToggle_->raise();
 }
 
-void NavigationPanel::refreshCollapseToggle() {
+void UiNavigationPanel::refreshCollapseToggle() {
     if (!collapseToggle_) {
         return;
     }
@@ -287,7 +287,7 @@ void NavigationPanel::refreshCollapseToggle() {
     collapseToggle_->setToolTip(collapsed_ ? tr("展开导航栏") : tr("收起导航栏"));
 }
 
-void NavigationPanel::refreshItemPresentation() {
+void UiNavigationPanel::refreshItemPresentation() {
     const bool horizontal = isHorizontal();
     for (auto* item : items_) {
         if (!item) {
@@ -320,7 +320,7 @@ void NavigationPanel::refreshItemPresentation() {
     }
 }
 
-QToolButton* NavigationPanel::createItemButton(const ItemModel& item, int index) {
+QToolButton* UiNavigationPanel::createItemButton(const ItemModel& item, int index) {
     auto* button = new QToolButton(this);
     button->setText(item.text);
     button->setIcon(item.icon);
@@ -354,7 +354,7 @@ QToolButton* NavigationPanel::createItemButton(const ItemModel& item, int index)
     return button;
 }
 
-void NavigationPanel::appendSection(QBoxLayout* layout,
+void UiNavigationPanel::appendSection(QBoxLayout* layout,
                                     const QString& title,
                                     const QList<ItemModel>& items,
                                     int* indexCounter) {
@@ -371,7 +371,7 @@ void NavigationPanel::appendSection(QBoxLayout* layout,
     }
 }
 
-QWidget* NavigationPanel::buildListHostWidget() {
+QWidget* UiNavigationPanel::buildListHostWidget() {
     auto* listHost = new QWidget(listScrollArea_);
     listHost->setProperty("uiRole", "navigationListHost");
     listHost->setAttribute(Qt::WA_StyledBackground, true);
@@ -408,7 +408,7 @@ QWidget* NavigationPanel::buildListHostWidget() {
     return listHost;
 }
 
-void NavigationPanel::configureRootLayout() {
+void UiNavigationPanel::configureRootLayout() {
     const bool horizontal = isHorizontal();
     if (!layout_) {
         layout_ = horizontal ? static_cast<QBoxLayout*>(new QHBoxLayout(this))
@@ -428,7 +428,7 @@ void NavigationPanel::configureRootLayout() {
     }
 }
 
-void NavigationPanel::configureScrollContainer() {
+void UiNavigationPanel::configureScrollContainer() {
     const bool horizontal = isHorizontal();
     listScrollArea_->setHorizontalScrollBarPolicy(horizontal ? Qt::ScrollBarAlwaysOff : Qt::ScrollBarAlwaysOff);
     listScrollArea_->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -443,7 +443,7 @@ void NavigationPanel::configureScrollContainer() {
     }
 }
 
-void NavigationPanel::applyPanelSizeForPosition() {
+void UiNavigationPanel::applyPanelSizeForPosition() {
     const bool horizontal = isHorizontal();
     if (horizontal) {
         setFixedHeight(kHorizontalNavHeight);
@@ -456,7 +456,7 @@ void NavigationPanel::applyPanelSizeForPosition() {
     }
 }
 
-void NavigationPanel::clearLayout() {
+void UiNavigationPanel::clearLayout() {
     if (!layout_) {
         return;
     }
@@ -468,7 +468,7 @@ void NavigationPanel::clearLayout() {
     }
 }
 
-void NavigationPanel::activateFirstItemIfAny() {
+void UiNavigationPanel::activateFirstItemIfAny() {
     if (items_.isEmpty()) {
         return;
     }
@@ -477,7 +477,7 @@ void NavigationPanel::activateFirstItemIfAny() {
     }
 }
 
-void NavigationPanel::rebuildLayout() {
+void UiNavigationPanel::rebuildLayout() {
     if (layout_) {
         clearLayout();
     }

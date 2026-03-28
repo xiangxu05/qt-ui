@@ -16,6 +16,7 @@ set(UIKIT_SOURCES
     src/uikit/core/theme_tokens.cpp
     src/uikit/core/theme_manager.cpp
     src/uikit/controls/ui_button.cpp
+    src/uikit/controls/ui_label.cpp
     src/uikit/form/ui_line_edit.cpp
     src/uikit/form/ui_combo_box.cpp
     src/uikit/form/ui_switch.cpp
@@ -32,6 +33,7 @@ set(UIKIT_HEADERS
     src/uikit/core/theme_tokens.h
     src/uikit/core/theme_manager.h
     src/uikit/controls/ui_button.h
+    src/uikit/controls/ui_label.h
     src/uikit/form/ui_line_edit.h
     src/uikit/form/ui_combo_box.h
     src/uikit/form/ui_switch.h
@@ -41,6 +43,8 @@ set(UIKIT_HEADERS
     src/uikit/shell/title_bar.h
     src/uikit/shell/navigation_panel.h
     src/uikit/shell/app_shell_window.h
+    src/uikit/utils/icon_defs.h
+    src/uikit/types/common_types.h
 )
 
 add_library(uikit STATIC
@@ -61,6 +65,8 @@ set(GALLERY_SOURCES
     src/gallery/main.cpp
     src/gallery/demo_gallery_widget.cpp
     src/gallery/demo_gallery_widget.h
+    src/gallery/state_demo_widget.cpp
+    src/gallery/state_demo_widget.h
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

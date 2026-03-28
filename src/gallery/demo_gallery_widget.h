@@ -4,20 +4,20 @@
 #include <QWidget>
 
 namespace uikit {
-class AppShellWindow;
+class UiAppShellWindow;
 }
 
 class DemoGalleryWidget : public QWidget {
     Q_OBJECT
 public:
-    explicit DemoGalleryWidget(uikit::AppShellWindow* shell, QWidget* parent = nullptr);
+    explicit DemoGalleryWidget(uikit::UiAppShellWindow* shell, QWidget* parent = nullptr);
 
 signals:
     void requestSetAltPage();
     void requestSwitchAltPage();
 
 private:
-    uikit::AppShellWindow* shell_ = nullptr;
+    uikit::UiAppShellWindow* shell_ = nullptr;
 };
 
 #endif  // UIKIT_DEMO_GALLERY_WIDGET_H

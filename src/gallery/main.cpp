@@ -1,10 +1,14 @@
 #include <QApplication>
+#include <QColor>
 #include <QLabel>
 #include <QPainter>
 #include <QResource>
 #include <QStyle>
 #include <QVBoxLayout>
 
+#include "gallery/state_demo_widget.h"
+
+#include "uikit/core/theme_tokens.h"
 #include "uikit/core/theme_manager.h"
 #include "uikit/shell/app_shell_window.h"
 
@@ -15,28 +19,44 @@ int main(int argc, char* argv[]) {
     // Explicitly initialize resources from static library target `uikit`.
     Q_INIT_RESOURCE(uikit);
     auto& themeManager = uikit::ThemeManager::instance();
+    themeManager.loadThemeFromSettings();
+
+    // 红色品牌色示例：深色基底 + BrandPreset::Red（也可传任意 QColor）
+    // 运行：`qt-ui.exe --brand-red`
+    // const bool brandRedExample = app.arguments().contains(QStringLiteral("--brand-red"));
+    // if (brandRedExample) {
+    //     themeManager.setCustomTokens(
+    //         uikit::ThemeTokenFactory::createThemeWithBrand(uikit::BrandPreset::Red, true));
+    //     themeManager.setTheme(uikit::ThemeManager::ThemeType::Custom, false);
+    // } else {
+    //     themeManager.setTheme(uikit::ThemeManager::ThemeType::Dark, false);
+    // }
+    const bool brandRedExample = true;
+    themeManager.setCustomTokens(
+        uikit::ThemeTokenFactory::createThemeWithBrand(uikit::BrandPreset::Red, true));
+    themeManager.setTheme(uikit::ThemeManager::ThemeType::Custom, false);
     themeManager.applyTo(&app);
 
-    uikit::AppShellWindow shell;
+    uikit::UiAppShellWindow shell;
     shell.setMinimumWindowSize(800, 600);
     shell.resize(880, 620);
 
     auto parsePosition = [&](const QStringList& args) {
         for (const QString& arg : args) {
             if (arg == "--nav-top") {
-                return uikit::NavigationPanel::Position::Top;
+                return uikit::UiNavigationPanel::Position::Top;
             }
             if (arg == "--nav-right") {
-                return uikit::NavigationPanel::Position::Right;
+                return uikit::UiNavigationPanel::Position::Right;
             }
             if (arg == "--nav-bottom") {
-                return uikit::NavigationPanel::Position::Bottom;
+                return uikit::UiNavigationPanel::Position::Bottom;
             }
             if (arg == "--nav-left") {
-                return uikit::NavigationPanel::Position::Left;
+                return uikit::UiNavigationPanel::Position::Left;
             }
         }
-        return uikit::NavigationPanel::Position::Left;
+        return uikit::UiNavigationPanel::Position::Left;
     };
     const auto navPosition = parsePosition(app.arguments());
     shell.setNavigationPosition(navPosition);
@@ -45,6 +65,7 @@ int main(int argc, char* argv[]) {
         // Keep page detached from top-level shell. AppShellWindow will adopt
         // pages into contentHost_ through setNavigationModel().
         auto* page = new QWidget(nullptr);
+        page->setProperty("uiRole", "galleryContentPage");
         auto* layout = new QVBoxLayout(page);
         layout->setContentsMargins(24, 24, 24, 24);
         layout->setSpacing(8);
@@ -60,23 +81,31 @@ int main(int argc, char* argv[]) {
         return page;
     };
 
+    const QColor logoPrimary = brandRedExample
+        ? uikit::ThemeTokenFactory::brandPresetColor(uikit::BrandPreset::Red)
+        : QColor(QStringLiteral("#4a78a6"));
+
     QPixmap logo(24, 24);
     logo.fill(Qt::transparent);
     {
         QPainter painter(&logo);
         painter.setRenderHint(QPainter::Antialiasing, true);
         painter.setPen(Qt::NoPen);
-        painter.setBrush(QColor("#4a78a6"));
+        painter.setBrush(logoPrimary);
         painter.drawRoundedRect(0, 0, 24, 24, 6, 6);
         painter.setPen(Qt::white);
         painter.drawText(logo.rect(), Qt::AlignCenter, "Q");
     }
 
-    uikit::NavigationPanel::Model navModel;
+    uikit::UiNavigationPanel::Model navModel;
     navModel.header.logo = logo;
     navModel.header.title = "Qt UI Workbench";
     const auto iconFromStyle = [&](QStyle::StandardPixmap sp) { return app.style()->standardIcon(sp); };
     navModel.primaryItems = {
+        {"state-demo",
+         "状态演示",
+         iconFromStyle(QStyle::SP_CommandLink),
+         new StateDemoWidget(nullptr)},
         {"dashboard", "仪表盘", iconFromStyle(QStyle::SP_DesktopIcon), createPage("仪表盘", "主列表第 1 项（有图标）")},
         {"message", "消息中心", iconFromStyle(QStyle::SP_MessageBoxInformation), createPage("消息中心", "主列表第 2 项（有图标）")},
         {"contacts", "联系人", iconFromStyle(QStyle::SP_DirHomeIcon), createPage("联系人", "主列表第 3 项（有图标）")},

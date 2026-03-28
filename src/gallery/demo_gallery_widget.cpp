@@ -3,7 +3,7 @@
 #include <QLabel>
 #include <QVBoxLayout>
 
-DemoGalleryWidget::DemoGalleryWidget(uikit::AppShellWindow* shell, QWidget* parent)
+DemoGalleryWidget::DemoGalleryWidget(uikit::UiAppShellWindow* shell, QWidget* parent)
     : QWidget(parent), shell_(shell) {
     auto* root = new QVBoxLayout(this);
     root->setContentsMargins(24, 24, 24, 24);

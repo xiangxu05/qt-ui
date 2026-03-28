@@ -1,12 +1,23 @@
 #include "uikit/controls/ui_button.h"
 
+#include <QEvent>
 #include <QStyle>
+#include <QTimer>
 
 namespace uikit {
+namespace {
+constexpr int kDefaultButtonHeightSmall = 30;
+constexpr int kDefaultButtonHeightMedium = 36;
+constexpr int kDefaultButtonHeightLarge = 44;
+const QString kSpinnerFrames = QStringLiteral("⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏");
+}  // namespace
 
 UiButton::UiButton(const QString& text, QWidget* parent)
     : QPushButton(text, parent) {
-    setCursor(Qt::PointingHandCursor);
+    loadingTimer_ = new QTimer(this);
+    loadingTimer_->setInterval(80);
+    connect(loadingTimer_, &QTimer::timeout, this, &UiButton::onLoadingTick);
+    updateButtonCursor();
     updateStyleState();
 }
 
@@ -40,13 +51,44 @@ void UiButton::setLoading(bool loading) {
     loading_ = loading;
     if (loading_) {
         cachedText_ = text();
-        setText("...");
+        loadingFrame_ = 0;
+        setText(kSpinnerFrames.mid(0, 1));
+        loadingTimer_->start();
         setEnabled(false);
     } else {
+        loadingTimer_->stop();
         setText(cachedText_);
         setEnabled(true);
     }
+    updateButtonCursor();
     updateStyleState();
+}
+
+void UiButton::changeEvent(QEvent* event) {
+    QPushButton::changeEvent(event);
+    if (event->type() == QEvent::EnabledChange) {
+        updateButtonCursor();
+    }
+}
+
+void UiButton::onLoadingTick() {
+    if (!loading_) {
+        return;
+    }
+    loadingFrame_ = (loadingFrame_ + 1) % kSpinnerFrames.size();
+    setText(kSpinnerFrames.mid(loadingFrame_, 1));
+}
+
+void UiButton::updateButtonCursor() {
+    if (loading_) {
+        setCursor(Qt::WaitCursor);
+        return;
+    }
+    if (!isEnabled()) {
+        setCursor(Qt::ForbiddenCursor);
+        return;
+    }
+    setCursor(Qt::PointingHandCursor);
 }
 
 void UiButton::updateStyleState() {
@@ -62,12 +104,12 @@ void UiButton::updateStyleState() {
 int UiButton::heightForSize(Size size) const {
     switch (size) {
         case Size::Small:
-            return 30;
+            return kDefaultButtonHeightSmall;
         case Size::Large:
-            return 44;
+            return kDefaultButtonHeightLarge;
         case Size::Medium:
         default:
-            return 36;
+            return kDefaultButtonHeightMedium;
     }
 }
 

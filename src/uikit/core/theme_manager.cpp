@@ -3,6 +3,7 @@
 #include <QApplication>
 #include <QDebug>
 #include <QFile>
+#include <QSettings>
 
 namespace uikit {
 
@@ -15,6 +16,7 @@ void ThemeManager::applyTo(QApplication* app) {
     if (!app) {
         return;
     }
+    lastApp_ = app;
     app->setStyleSheet(resolvedStyleSheet());
 }
 
@@ -26,6 +28,8 @@ QString ThemeManager::resolvedStyleSheet() const {
     merged += "\n";
     merged += loadResource(stylePrefix + QStringLiteral("controls.qss"));
     merged += "\n";
+    merged += loadResource(stylePrefix + QStringLiteral("form.qss"));
+    merged += "\n";
     merged += loadResource(stylePrefix + QStringLiteral("feedback.qss"));
     merged += "\n";
     merged += loadResource(stylePrefix + QStringLiteral("shell.qss"));
@@ -33,7 +37,78 @@ QString ThemeManager::resolvedStyleSheet() const {
 }
 
 ThemeTokens ThemeManager::tokens() const {
-    return ThemeTokenFactory::lightBlueTheme();
+    switch (currentTheme_) {
+        case ThemeType::Dark:
+            return ThemeTokenFactory::darkTheme();
+        case ThemeType::Custom:
+            if (customTokensValid_) {
+                return customTokens_;
+            }
+            return ThemeTokenFactory::lightBlueTheme();
+        case ThemeType::Light:
+        default:
+            return ThemeTokenFactory::lightBlueTheme();
+    }
+}
+
+void ThemeManager::setTheme(ThemeType type, bool persist) {
+    if (type == ThemeType::Custom && !customTokensValid_) {
+        qWarning() << "ThemeManager::setTheme(Custom) ignored: call setCustomTokens() first.";
+        return;
+    }
+    if (currentTheme_ == type) {
+        return;
+    }
+    currentTheme_ = type;
+    if (persist) {
+        saveThemePreference();
+    }
+    if (lastApp_) {
+        applyTo(lastApp_);
+    }
+    emit themeChanged(currentTheme_);
+}
+
+void ThemeManager::setCustomTokens(const ThemeTokens& tokens) {
+    customTokens_ = tokens;
+    customTokensValid_ = true;
+}
+
+void ThemeManager::clearCustomTokens() {
+    customTokens_.vars.clear();
+    customTokensValid_ = false;
+    if (currentTheme_ == ThemeType::Custom) {
+        currentTheme_ = ThemeType::Light;
+        saveThemePreference();
+        if (lastApp_) {
+            applyTo(lastApp_);
+        }
+        emit themeChanged(currentTheme_);
+    }
+}
+
+void ThemeManager::loadThemeFromSettings() {
+    QSettings settings;
+    settings.beginGroup(QStringLiteral("uikit"));
+    const int raw = settings.value(QStringLiteral("themeType"), static_cast<int>(ThemeType::Light)).toInt();
+    settings.endGroup();
+    if (raw < static_cast<int>(ThemeType::Light) || raw > static_cast<int>(ThemeType::Custom)) {
+        currentTheme_ = ThemeType::Light;
+        return;
+    }
+    const auto t = static_cast<ThemeType>(raw);
+    if (t == ThemeType::Custom && !customTokensValid_) {
+        currentTheme_ = ThemeType::Light;
+        return;
+    }
+    currentTheme_ = t;
+}
+
+void ThemeManager::saveThemePreference() const {
+    QSettings settings;
+    settings.beginGroup(QStringLiteral("uikit"));
+    settings.setValue(QStringLiteral("themeType"), static_cast<int>(currentTheme_));
+    settings.endGroup();
 }
 
 QString ThemeManager::loadResource(const QString& path) const {

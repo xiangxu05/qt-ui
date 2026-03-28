@@ -1,11 +1,16 @@
-/* Button base */
+/* Button base — 过渡与指针（Hover/Focus/Pressed/Disabled/Loading 见下） */
 QPushButton[uiRole="button"] {
     border-radius: @RADIUS_MD@;
-    border: 1px solid @BORDER_BASE@;
+    border: @BORDER_WIDTH@ solid @BORDER_BASE@;
     background: @BG_ELEVATED@;
     color: @TEXT_PRIMARY@;
-    padding: 0 12px;
-    font-weight: 500;
+    padding: 0 @SPACING_MD@;
+    font-weight: @FONT_WEIGHT_MEDIUM@;
+    outline: none;
+    transition: background-color @DURATION_NORMAL@ @EASING_EASE_IN_OUT@,
+                border-color @DURATION_NORMAL@ @EASING_EASE_IN_OUT@,
+                color @DURATION_NORMAL@ @EASING_EASE_IN_OUT@,
+                box-shadow @DURATION_NORMAL@ @EASING_EASE_IN_OUT@;
 }
 
 /* Button size scale */
@@ -13,48 +18,115 @@ QPushButton[uiRole="button"][uiSize="sm"] { min-height: 30px; }
 QPushButton[uiRole="button"][uiSize="md"] { min-height: 36px; }
 QPushButton[uiRole="button"][uiSize="lg"] { min-height: 44px; }
 
-/* Button variants */
+/* Primary */
 QPushButton[uiRole="button"][uiVariant="primary"] {
     background: @PRIMARY@;
     border-color: @PRIMARY@;
     color: @ON_PRIMARY@;
 }
-QPushButton[uiRole="button"][uiVariant="primary"]:hover { background: @PRIMARY_HOVER@; border-color: @PRIMARY_HOVER@; }
-QPushButton[uiRole="button"][uiVariant="primary"]:pressed { background: @PRIMARY_PRESSED@; border-color: @PRIMARY_PRESSED@; }
+QPushButton[uiRole="button"][uiVariant="primary"]:hover {
+    background: @PRIMARY_HOVER@;
+    border-color: @PRIMARY_HOVER@;
+}
+QPushButton[uiRole="button"][uiVariant="primary"]:pressed {
+    background: @PRIMARY_PRESSED@;
+    border-color: @PRIMARY_PRESSED@;
+    transition: background-color @DURATION_FAST@ @EASING_EASE_IN@,
+                border-color @DURATION_FAST@ @EASING_EASE_IN@;
+}
+QPushButton[uiRole="button"][uiVariant="primary"]:focus {
+    box-shadow: @PRIMARY_FOCUS_RING@;
+}
 
-QPushButton[uiRole="button"][uiVariant="secondary"] { background: @BG_ELEVATED@; border-color: @BORDER_STRONG@; }
-QPushButton[uiRole="button"][uiVariant="ghost"] { background: transparent; border-color: transparent; color: @PRIMARY@; }
-QPushButton[uiRole="button"][uiVariant="danger"] { background: @DANGER@; border-color: @DANGER@; color: @ON_PRIMARY@; }
-QPushButton[uiRole="button"][uiVariant="icon"] { min-width: 32px; max-width: 32px; padding: 0; }
-QPushButton[uiRole="button"]:disabled { color: @TEXT_MUTED@; background: @DISABLED_BG@; border-color: @DISABLED_BORDER@; }
-
-/* Input controls */
-QLineEdit[uiRole="lineEdit"], QComboBox[uiRole="comboBox"] {
+/* Secondary */
+QPushButton[uiRole="button"][uiVariant="secondary"] {
     background: @BG_ELEVATED@;
-    border: 1px solid @BORDER_BASE@;
-    border-radius: @RADIUS_SM@;
-    padding: 8px 10px;
-    min-height: 18px;
+    border-color: @BORDER_STRONG@;
 }
-QLineEdit[uiRole="lineEdit"]:focus, QComboBox[uiRole="comboBox"]:focus {
+QPushButton[uiRole="button"][uiVariant="secondary"]:hover {
     border-color: @PRIMARY@;
+    background: @GRAY_2@;
 }
-QLineEdit[uiRole="lineEdit"][uiError="true"], QComboBox[uiRole="comboBox"][uiError="true"] {
-    border-color: @DANGER@;
+QPushButton[uiRole="button"][uiVariant="secondary"]:pressed {
+    background: @GRAY_3@;
+    border-color: @PRIMARY_PRESSED@;
+    transition: background-color @DURATION_FAST@ @EASING_EASE_IN@,
+                border-color @DURATION_FAST@ @EASING_EASE_IN@;
+}
+QPushButton[uiRole="button"][uiVariant="secondary"]:focus {
+    box-shadow: @PRIMARY_FOCUS_RING@;
 }
 
-/* Switch control */
-QCheckBox[uiRole="switch"] {
-    spacing: 8px;
+/* Ghost */
+QPushButton[uiRole="button"][uiVariant="ghost"] {
+    background: transparent;
+    border-color: transparent;
+    color: @PRIMARY@;
 }
-QCheckBox[uiRole="switch"]::indicator {
-    width: 36px;
-    height: 20px;
-    border-radius: 10px;
-    border: 1px solid @BORDER_BASE@;
-    background: @SWITCH_TRACK_BG@;
+QPushButton[uiRole="button"][uiVariant="ghost"]:hover {
+    background: @PRIMARY_SOFT@;
 }
-QCheckBox[uiRole="switch"]::indicator:checked {
-    background: @PRIMARY@;
-    border-color: @PRIMARY@;
+QPushButton[uiRole="button"][uiVariant="ghost"]:pressed {
+    background: @PRIMARY_SOFT@;
+    color: @PRIMARY_PRESSED@;
+    transition: background-color @DURATION_FAST@ @EASING_EASE_IN@,
+                color @DURATION_FAST@ @EASING_EASE_IN@;
+}
+QPushButton[uiRole="button"][uiVariant="ghost"]:focus {
+    box-shadow: @PRIMARY_FOCUS_RING@;
+}
+
+/* Danger */
+QPushButton[uiRole="button"][uiVariant="danger"] {
+    background: @DANGER@;
+    border-color: @DANGER@;
+    color: @ON_PRIMARY@;
+}
+QPushButton[uiRole="button"][uiVariant="danger"]:hover {
+    background: #e8706d;
+    border-color: #e8706d;
+}
+QPushButton[uiRole="button"][uiVariant="danger"]:pressed {
+    background: #c44743;
+    border-color: #c44743;
+    transition: background-color @DURATION_FAST@ @EASING_EASE_IN@,
+                border-color @DURATION_FAST@ @EASING_EASE_IN@;
+}
+QPushButton[uiRole="button"][uiVariant="danger"]:focus {
+    box-shadow: @PRIMARY_FOCUS_RING@;
+}
+
+/* Icon */
+QPushButton[uiRole="button"][uiVariant="icon"] {
+    min-width: 32px;
+    max-width: 32px;
+    padding: 0;
+}
+QPushButton[uiRole="button"][uiVariant="icon"]:hover {
+    background: @PRIMARY_SOFT@;
+}
+QPushButton[uiRole="button"][uiVariant="icon"]:pressed {
+    background: @GRAY_4@;
+    transition: background-color @DURATION_FAST@ @EASING_EASE_IN@;
+}
+QPushButton[uiRole="button"][uiVariant="icon"]:focus {
+    box-shadow: @PRIMARY_FOCUS_RING@;
+}
+
+/* Disabled（需覆盖各 uiVariant 的背景，否则仅 :disabled 优先级不足） */
+QPushButton[uiRole="button"][uiVariant="primary"]:disabled,
+QPushButton[uiRole="button"][uiVariant="secondary"]:disabled,
+QPushButton[uiRole="button"][uiVariant="ghost"]:disabled,
+QPushButton[uiRole="button"][uiVariant="danger"]:disabled,
+QPushButton[uiRole="button"][uiVariant="icon"]:disabled {
+    color: @TEXT_MUTED@;
+    background: @DISABLED_BG@;
+    border-color: @DISABLED_BORDER@;
+    cursor: not-allowed;
+}
+QPushButton[uiRole="button"][uiVariant="ghost"]:disabled {
+    background: @DISABLED_BG@;
+}
+QPushButton[uiRole="button"][uiLoading="true"] {
+    cursor: wait;
 }

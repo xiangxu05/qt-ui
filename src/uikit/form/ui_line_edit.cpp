@@ -1,5 +1,6 @@
 #include "uikit/form/ui_line_edit.h"
 
+#include <QEvent>
 #include <QStyle>
 
 namespace uikit {
@@ -7,6 +8,7 @@ namespace uikit {
 UiLineEdit::UiLineEdit(QWidget* parent)
     : QLineEdit(parent) {
     setProperty("uiRole", "lineEdit");
+    updateEditCursor();
     refreshStyle();
 }
 
@@ -26,6 +28,17 @@ void UiLineEdit::setErrorMessage(const QString& message) {
 
 QString UiLineEdit::errorMessage() const {
     return errorMessage_;
+}
+
+void UiLineEdit::changeEvent(QEvent* event) {
+    QLineEdit::changeEvent(event);
+    if (event->type() == QEvent::EnabledChange) {
+        updateEditCursor();
+    }
+}
+
+void UiLineEdit::updateEditCursor() {
+    setCursor(isEnabled() ? Qt::IBeamCursor : Qt::ForbiddenCursor);
 }
 
 void UiLineEdit::refreshStyle() {

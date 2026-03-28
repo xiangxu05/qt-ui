@@ -7,10 +7,10 @@ namespace uikit {
 
 class UiButton;
 
-class TitleBar : public QWidget {
+class UiTitleBar : public QWidget {
     Q_OBJECT
 public:
-    explicit TitleBar(QWidget* parent = nullptr);
+    explicit UiTitleBar(QWidget* parent = nullptr);
     void setMaximizedState(bool maximized);
 signals:
     void minimizeRequested();

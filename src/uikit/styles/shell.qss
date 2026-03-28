@@ -22,7 +22,7 @@ QWidget[uiRole="titleBarActions"] {
     background-color: @GLASS_TITLE@;
 }
 QLabel[uiRole="titleBarLabel"] {
-    font-weight: 600;
+    font-weight: @FONT_WEIGHT_SEMIBOLD@;
 }
 
 /* Source of truth: title bar button states live only in shell.qss.
@@ -40,11 +40,11 @@ QWidget[uiRole="titleBar"] QPushButton[uiSurface="titleBar"]#TitleBarCloseButton
     border-radius: 0;
     background-color: transparent;
     color: @TITLE_BTN_TEXT@;
-    font-size: 12px;
-    font-weight: 500;
+    font-size: @FONT_SIZE_CAPTION@;
+    font-weight: @FONT_WEIGHT_MEDIUM@;
 }
 QWidget[uiRole="titleBar"] QPushButton[uiSurface="titleBar"]#TitleBarMaxButton {
-    font-size: 16px;
+    font-size: @FONT_SIZE_H5@;
 }
 QWidget[uiRole="titleBar"] QPushButton[uiSurface="titleBar"]#TitleBarMinButton:hover,
 QWidget[uiRole="titleBar"] QPushButton[uiSurface="titleBar"]#TitleBarMaxButton:hover,
@@ -93,15 +93,15 @@ QLabel[uiRole="navigationLogo"] { background: transparent; }
 QWidget[uiRole="navigationTextHost"] { background: transparent; border: none; }
 QLabel[uiRole="navigationTitle"] {
     background: transparent;
-    font-weight: 600;
+    font-weight: @FONT_WEIGHT_SEMIBOLD@;
     color: @TEXT_PRIMARY@;
-    font-size: 13px;
+    font-size: @FONT_SIZE_BODY_SM@;
 }
 QLabel[uiRole="navigationSectionTitle"] {
     background: transparent;
     color: @TEXT_SECONDARY@;
-    font-size: 11px;
-    font-weight: 600;
+    font-size: @FONT_SIZE_SMALL@;
+    font-weight: @FONT_WEIGHT_SEMIBOLD@;
     padding: 6px 8px 2px 8px;
 }
 QScrollArea[uiRole="navigationScrollArea"] {
@@ -180,13 +180,13 @@ QWidget[uiRole="navigation"] QToolButton[uiRole="navigationItem"][navCollapsed="
 QWidget[uiRole="navigation"] QToolButton[uiRole="navigationItem"]:checked {
     background-color: @PRIMARY_SOFT@;
     color: @PRIMARY@;
-    border-left: 2px solid @PRIMARY@;
-    font-weight: 600;
+    border-left: @BORDER_WIDTH_STRONG@ solid @PRIMARY@;
+    font-weight: @FONT_WEIGHT_SEMIBOLD@;
 }
 QWidget[uiRole="navigation"][uiPosition="top"] QToolButton[uiRole="navigationItem"]:checked,
 QWidget[uiRole="navigation"][uiPosition="bottom"] QToolButton[uiRole="navigationItem"]:checked {
     border-left: none;
-    border-bottom: 2px solid @PRIMARY@;
+    border-bottom: @BORDER_WIDTH_STRONG@ solid @PRIMARY@;
 }
 QWidget[uiRole="navigation"] QToolButton[uiRole="navigationItem"]:hover:!checked {
     background-color: @NAV_ITEM_HOVER@;
