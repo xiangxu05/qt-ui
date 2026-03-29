@@ -3,6 +3,7 @@
 #include <QApplication>
 #include <QDebug>
 #include <QFile>
+#include <QRegularExpression>
 #include <QSettings>
 
 namespace uikit {
@@ -123,6 +124,22 @@ QString ThemeManager::loadResource(const QString& path) const {
 QString ThemeManager::applyTokens(QString qss, const ThemeTokens& tokenSet) const {
     for (auto it = tokenSet.vars.constBegin(); it != tokenSet.vars.constEnd(); ++it) {
         qss.replace(it.key(), it.value());
+    }
+    // Guardrail: keep partial style regressions observable.
+    static const QRegularExpression kUnresolvedTokenPattern(QStringLiteral(R"(@[A-Z0-9_]+@)"));
+    QRegularExpressionMatchIterator it = kUnresolvedTokenPattern.globalMatch(qss);
+    if (it.hasNext()) {
+        QStringList unresolved;
+        while (it.hasNext()) {
+            const QString token = it.next().captured(0);
+            if (!unresolved.contains(token)) {
+                unresolved.push_back(token);
+            }
+            if (unresolved.size() >= 8) {
+                break;
+            }
+        }
+        qWarning() << "ThemeManager unresolved tokens in stylesheet:" << unresolved;
     }
     return qss;
 }

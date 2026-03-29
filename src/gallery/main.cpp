@@ -23,18 +23,14 @@ int main(int argc, char* argv[]) {
 
     // 红色品牌色示例：深色基底 + BrandPreset::Red（也可传任意 QColor）
     // 运行：`qt-ui.exe --brand-red`
-    // const bool brandRedExample = app.arguments().contains(QStringLiteral("--brand-red"));
-    // if (brandRedExample) {
-    //     themeManager.setCustomTokens(
-    //         uikit::ThemeTokenFactory::createThemeWithBrand(uikit::BrandPreset::Red, true));
-    //     themeManager.setTheme(uikit::ThemeManager::ThemeType::Custom, false);
-    // } else {
-    //     themeManager.setTheme(uikit::ThemeManager::ThemeType::Dark, false);
-    // }
-    const bool brandRedExample = true;
-    themeManager.setCustomTokens(
-        uikit::ThemeTokenFactory::createThemeWithBrand(uikit::BrandPreset::Red, true));
-    themeManager.setTheme(uikit::ThemeManager::ThemeType::Custom, false);
+    const bool brandRedExample = app.arguments().contains(QStringLiteral("--brand-red"));
+    if (brandRedExample) {
+        themeManager.setCustomTokens(
+            uikit::ThemeTokenFactory::createThemeWithBrand(uikit::BrandPreset::Red, false));
+        themeManager.setTheme(uikit::ThemeManager::ThemeType::Custom, false);
+    } else {
+        themeManager.setTheme(uikit::ThemeManager::ThemeType::Light, false);
+    }
     themeManager.applyTo(&app);
 
     uikit::UiAppShellWindow shell;

@@ -154,7 +154,9 @@ ThemeTokens ThemeTokenFactory::lightBlueTheme() {
         {"@PRIMARY_PRESSED@", "#3f6d9b"},
         {"@PRIMARY_SOFT@", "#e7f0fa"},
         {"@ON_PRIMARY@", "#ffffff"},
+        {"@PRIMARY_FOCUS_RING@", "0 0 0 3px rgba(74, 120, 166, 0.20)"},
         {"@DANGER@", "#d9534f"},
+        {"@DANGER_FOCUS_RING@", "0 0 0 3px rgba(217, 83, 79, 0.15)"},
 
         // Semantic functional colors (for controls / badges)
         {"@SUCCESS@", "#52c41a"},
