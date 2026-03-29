@@ -48,18 +48,26 @@ void UiButton::setLoading(bool loading) {
     if (loading_ == loading) {
         return;
     }
+
     loading_ = loading;
+
     if (loading_) {
+        // 锁定当前宽度，避免加载文案变成单字符后按钮塌缩。
+        const int lockedWidth = width() > 0 ? width() : sizeHint().width();
+        setMinimumWidth(lockedWidth);
+        setMaximumWidth(lockedWidth);
         cachedText_ = text();
         loadingFrame_ = 0;
         setText(kSpinnerFrames.mid(0, 1));
         loadingTimer_->start();
-        setEnabled(false);
     } else {
         loadingTimer_->stop();
         setText(cachedText_);
-        setEnabled(true);
+        // 取消宽度锁定，恢复自适应。
+        setMinimumWidth(0);
+        setMaximumWidth(QWIDGETSIZE_MAX);
     }
+
     updateButtonCursor();
     updateStyleState();
 }
@@ -69,6 +77,23 @@ void UiButton::changeEvent(QEvent* event) {
     if (event->type() == QEvent::EnabledChange) {
         updateButtonCursor();
     }
+}
+
+bool UiButton::event(QEvent* event) {
+    if (loading_) {
+        switch (event->type()) {
+            case QEvent::MouseButtonPress:
+            case QEvent::MouseButtonRelease:
+            case QEvent::MouseButtonDblClick:
+            case QEvent::KeyPress:
+            case QEvent::KeyRelease:
+                // Loading 时吞掉交互事件，避免重复触发 clicked。
+                return true;
+            default:
+                break;
+        }
+    }
+    return QPushButton::event(event);
 }
 
 void UiButton::onLoadingTick() {

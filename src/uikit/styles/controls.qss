@@ -113,6 +113,33 @@ QPushButton[uiRole="button"][uiVariant="icon"]:focus {
     box-shadow: @PRIMARY_FOCUS_RING@;
 }
 
+/* Loading（不走 disabled 外观，按变体保留语义差异） */
+QPushButton[uiRole="button"][uiVariant="primary"][uiLoading="true"] {
+    background: @PRIMARY_HOVER@;
+    border-color: @PRIMARY_HOVER@;
+    color: @ON_PRIMARY@;
+}
+QPushButton[uiRole="button"][uiVariant="secondary"][uiLoading="true"] {
+    background: @GRAY_2@;
+    border-color: @PRIMARY@;
+    color: @TEXT_PRIMARY@;
+}
+QPushButton[uiRole="button"][uiVariant="ghost"][uiLoading="true"] {
+    background: @PRIMARY_SOFT@;
+    border-color: transparent;
+    color: @PRIMARY@;
+}
+QPushButton[uiRole="button"][uiVariant="danger"][uiLoading="true"] {
+    background: #e8706d;
+    border-color: #e8706d;
+    color: @ON_PRIMARY@;
+}
+QPushButton[uiRole="button"][uiVariant="icon"][uiLoading="true"] {
+    background: @PRIMARY_SOFT@;
+    border-color: @BORDER_BASE@;
+    color: @PRIMARY@;
+}
+
 /* Disabled（需覆盖各 uiVariant 的背景，否则仅 :disabled 优先级不足） */
 QPushButton[uiRole="button"][uiVariant="primary"]:disabled,
 QPushButton[uiRole="button"][uiVariant="secondary"]:disabled,

@@ -6,7 +6,7 @@
 #include <QStyle>
 #include <QVBoxLayout>
 
-#include "gallery/state_demo_widget.h"
+#include "gallery/demo_button_widget.h"
 
 #include "uikit/core/theme_tokens.h"
 #include "uikit/core/theme_manager.h"
@@ -101,26 +101,26 @@ int main(int argc, char* argv[]) {
         {"state-demo",
          "状态演示",
          iconFromStyle(QStyle::SP_CommandLink),
-         new StateDemoWidget(nullptr)},
-        {"dashboard", "仪表盘", iconFromStyle(QStyle::SP_DesktopIcon), createPage("仪表盘", "主列表第 1 项（有图标）")},
-        {"message", "消息中心", iconFromStyle(QStyle::SP_MessageBoxInformation), createPage("消息中心", "主列表第 2 项（有图标）")},
-        {"contacts", "联系人", iconFromStyle(QStyle::SP_DirHomeIcon), createPage("联系人", "主列表第 3 项（有图标）")},
-        {"calendar", "日程", QIcon(), createPage("日程", "主列表第 4 项（无图标，Top/Bottom 显示文字）")},
-        {"doc", "文档", iconFromStyle(QStyle::SP_FileIcon), createPage("文档", "主列表第 5 项（有图标）")},
-        {"tasks", "任务", iconFromStyle(QStyle::SP_DialogApplyButton), createPage("任务", "主列表第 6 项（有图标）")},
-        {"repo", "代码仓", QIcon(), createPage("代码仓", "主列表第 7 项（无图标，Top/Bottom 显示文字）")},
-        {"deploy", "发布", iconFromStyle(QStyle::SP_BrowserReload), createPage("发布", "主列表第 8 项（有图标）")}
+         new DemoButtonWidget(nullptr)},
+        // {"dashboard", "仪表盘", iconFromStyle(QStyle::SP_DesktopIcon), createPage("仪表盘", "主列表第 1 项（有图标）")},
+        // {"message", "消息中心", iconFromStyle(QStyle::SP_MessageBoxInformation), createPage("消息中心", "主列表第 2 项（有图标）")},
+        // {"contacts", "联系人", iconFromStyle(QStyle::SP_DirHomeIcon), createPage("联系人", "主列表第 3 项（有图标）")},
+        // {"calendar", "日程", QIcon(), createPage("日程", "主列表第 4 项（无图标，Top/Bottom 显示文字）")},
+        // {"doc", "文档", iconFromStyle(QStyle::SP_FileIcon), createPage("文档", "主列表第 5 项（有图标）")},
+        // {"tasks", "任务", iconFromStyle(QStyle::SP_DialogApplyButton), createPage("任务", "主列表第 6 项（有图标）")},
+        // {"repo", "代码仓", QIcon(), createPage("代码仓", "主列表第 7 项（无图标，Top/Bottom 显示文字）")},
+        // {"deploy", "发布", iconFromStyle(QStyle::SP_BrowserReload), createPage("发布", "主列表第 8 项（有图标）")}
     };
     navModel.secondarySections = {
-        {"次要列表 A",
-         {{"analytics", "数据分析", iconFromStyle(QStyle::SP_DriveNetIcon), createPage("数据分析", "次要列表 A - 1")},
-          {"monitor", "监控告警", iconFromStyle(QStyle::SP_BrowserStop), createPage("监控告警", "次要列表 A - 2")},
-          {"audit", "审计日志", iconFromStyle(QStyle::SP_FileDialogDetailedView), createPage("审计日志", "次要列表 A - 3")}}},
-        {"次要列表 B",
-         {{"setting", "系统设置", iconFromStyle(QStyle::SP_FileDialogContentsView), createPage("系统设置", "次要列表 B - 1")},
-          {"permission", "权限管理", QIcon(), createPage("权限管理", "次要列表 B - 2（无图标）")},
-          {"integration", "集成中心", iconFromStyle(QStyle::SP_ComputerIcon), createPage("集成中心", "次要列表 B - 3")},
-          {"about", "关于", iconFromStyle(QStyle::SP_MessageBoxQuestion), createPage("关于", "次要列表 B - 4")}}}
+    //     {"次要列表 A",
+    //      {{"analytics", "数据分析", iconFromStyle(QStyle::SP_DriveNetIcon), createPage("数据分析", "次要列表 A - 1")},
+    //       {"monitor", "监控告警", iconFromStyle(QStyle::SP_BrowserStop), createPage("监控告警", "次要列表 A - 2")},
+    //       {"audit", "审计日志", iconFromStyle(QStyle::SP_FileDialogDetailedView), createPage("审计日志", "次要列表 A - 3")}}},
+    //     {"次要列表 B",
+    //      {{"setting", "系统设置", iconFromStyle(QStyle::SP_FileDialogContentsView), createPage("系统设置", "次要列表 B - 1")},
+    //       {"permission", "权限管理", QIcon(), createPage("权限管理", "次要列表 B - 2（无图标）")},
+    //       {"integration", "集成中心", iconFromStyle(QStyle::SP_ComputerIcon), createPage("集成中心", "次要列表 B - 3")},
+    //       {"about", "关于", iconFromStyle(QStyle::SP_MessageBoxQuestion), createPage("关于", "次要列表 B - 4")}}}
     };
     shell.setNavigationModel(navModel);
     shell.show();

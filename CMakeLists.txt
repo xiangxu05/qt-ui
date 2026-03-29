@@ -65,8 +65,8 @@ set(GALLERY_SOURCES
     src/gallery/main.cpp
     src/gallery/demo_gallery_widget.cpp
     src/gallery/demo_gallery_widget.h
-    src/gallery/state_demo_widget.cpp
-    src/gallery/state_demo_widget.h
+    src/gallery/demo_button_widget.cpp
+    src/gallery/demo_button_widget.h
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
